@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { MainRouter } from './Main.Router';
 import { AuthRouter } from './Auth.Router';
 
-const profile = true;
+const profile = false;
 
 const Router = () => {
   return (

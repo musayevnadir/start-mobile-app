@@ -6,21 +6,33 @@
  */
 
 import Router from 'router';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { ThemeProvider, useTheme } from 'theme/ThemeContext';
+import { StatusBarManager } from 'components/StatusBarManager';
+import { Fragment } from 'react';
 
-function App() {
-  const isDarkMode = useColorScheme() === 'dark';
+function AppContent() {
+  const { colors } = useTheme();
+
+  console.log(colors);
 
   return (
-    <SafeAreaProvider>
-      <StatusBar
-        translucent
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-      />
-      <View style={styles.root}>
+    <Fragment>
+      <StatusBarManager />
+      <View style={[styles.root, { backgroundColor: colors.background }]}>
         <Router />
       </View>
+    </Fragment>
+  );
+}
+
+function App() {
+  return (
+    <SafeAreaProvider>
+      <ThemeProvider>
+        <AppContent />
+      </ThemeProvider>
     </SafeAreaProvider>
   );
 }

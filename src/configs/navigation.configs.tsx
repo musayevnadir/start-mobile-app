@@ -18,11 +18,7 @@ export const screenOptions: NativeStackNavigationOptions = {
 
 export const authScreenOptions: NativeStackNavigationOptions = {
   ...screenOptions,
-  contentStyle: {
-    // backgroundColor: 'red',
-    paddingHorizontal: scale.horizontal(16),
-    paddingTop: scale.vertical(100),
-  },
+  // Remove fixed padding to allow full screen usage
 };
 
 const tabIconConfig = {
