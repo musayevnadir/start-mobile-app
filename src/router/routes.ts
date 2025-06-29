@@ -1,0 +1,11 @@
+export enum Routes {
+  AUTH_ROUTER = 'AUTH_ROUTER',
+  MAIN_ROUTER = 'MAIN_ROUTER',
+  TAB_ROUTER = 'TAB_ROUTER',
+  LOGIN = 'LOGIN',
+  REGISTER = 'REGISTER',
+  MAIN = 'MAIN',
+  PROFILE = 'PROFILE',
+  LIST = 'LIST',
+  DETAIL = 'DETAIL',
+}
