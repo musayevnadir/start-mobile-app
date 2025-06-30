@@ -1,7 +1,7 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
 import { MainRouter } from './Main.Router';
 import { AuthRouter } from './Auth.Router';
+import { NavigationContainer } from '@react-navigation/native';
 
 const profile = true;
 
