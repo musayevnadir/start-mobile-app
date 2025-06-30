@@ -1,11 +1,11 @@
 import { useColorScheme } from 'react-native';
-import React, { createContext, useContext, useState } from 'react';
+import { ThemeStorage } from 'utils/storage';
+import { ThemeLoadingScreen } from 'components/ThemeLoadingScreen';
 import { lightColors, darkColors, type ColorScheme } from './colors';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
-// Theme mode types
 export type ThemeMode = 'light' | 'dark' | 'system';
 
-// Theme context interface
 interface ThemeContextType {
   colors: ColorScheme;
   mode: ThemeMode;
@@ -13,33 +13,52 @@ interface ThemeContextType {
   setThemeMode: (mode: ThemeMode) => void;
 }
 
-// Create theme context
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-// Theme provider props
 interface ThemeProviderProps {
   children: React.ReactNode;
 }
 
-// Theme provider component
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
-  const systemColorScheme = useColorScheme(); // Gets system theme
+  const systemColorScheme = useColorScheme();
   const [themeMode, setThemeMode] = useState<ThemeMode>('system');
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Determine if dark theme should be active
+  useEffect(() => {
+    const loadSavedTheme = async () => {
+      try {
+        const savedTheme = await ThemeStorage.loadThemeMode();
+        setThemeMode(savedTheme);
+      } catch (error) {
+        console.warn('Failed to load saved theme:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadSavedTheme();
+  }, []);
+
+  const handleThemeChange = async (mode: ThemeMode) => {
+    setThemeMode(mode);
+    await ThemeStorage.saveThemeMode(mode);
+  };
+
   const isDark =
     themeMode === 'dark' ||
     (themeMode === 'system' && systemColorScheme === 'dark');
 
-  // Select colors based on theme
   const colors = isDark ? darkColors : lightColors;
 
-  // Theme context value
+  if (isLoading) {
+    return <ThemeLoadingScreen />;
+  }
+
   const value: ThemeContextType = {
     colors,
     mode: themeMode,
     isDark,
-    setThemeMode,
+    setThemeMode: handleThemeChange,
   };
 
   return (
@@ -47,7 +66,6 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   );
 };
 
-// Custom hook to use theme
 export const useTheme = (): ThemeContextType => {
   const context = useContext(ThemeContext);
 

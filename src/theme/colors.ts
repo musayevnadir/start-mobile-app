@@ -3,8 +3,7 @@
  * Supports both light and dark themes with semantic color naming
  */
 
-// Base color palette
-const palette = {
+export const palette = {
   // Primary colors
   blue50: '#eff6ff',
   blue100: '#dbeafe',
@@ -98,5 +97,7 @@ export const darkColors = {
 } as const;
 
 // Type definitions
-export type ColorScheme = typeof lightColors;
-export type ColorName = keyof ColorScheme;
+export type LightColorScheme = typeof lightColors;
+export type DarkColorScheme = typeof darkColors;
+export type ColorScheme = LightColorScheme | DarkColorScheme;
+export type ColorName = keyof LightColorScheme;

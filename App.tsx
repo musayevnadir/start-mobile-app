@@ -6,11 +6,12 @@
  */
 
 import Router from 'router';
-import { StyleSheet, View } from 'react-native';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { ThemeProvider, useTheme } from 'theme/ThemeContext';
-import { StatusBarManager } from 'components/StatusBarManager';
 import { Fragment } from 'react';
+import { View } from 'react-native';
+import { CommonStyles } from 'theme/common.styles';
+import { ThemeProvider, useTheme } from 'theme/ThemeContext';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { StatusBarManager } from 'components/StatusBarManager';
 
 function AppContent() {
   const { colors } = useTheme();
@@ -20,7 +21,7 @@ function AppContent() {
   return (
     <Fragment>
       <StatusBarManager />
-      <View style={[styles.root, { backgroundColor: colors.background }]}>
+      <View style={[CommonStyles.flex, { backgroundColor: colors.background }]}>
         <Router />
       </View>
     </Fragment>
@@ -36,11 +37,5 @@ function App() {
     </SafeAreaProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-  },
-});
 
 export default App;

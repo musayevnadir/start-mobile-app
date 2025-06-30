@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { scale } from 'theme/metrics';
-import { useTheme, type ThemeMode } from 'theme/ThemeContext';
 import { typography } from 'theme/typograpy';
+import { useTheme, type ThemeMode } from 'theme/ThemeContext';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 interface ThemeOption {
   mode: ThemeMode;
