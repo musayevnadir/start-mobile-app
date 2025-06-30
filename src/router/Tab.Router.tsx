@@ -4,17 +4,23 @@ import { NavigationParamList } from 'types/navigator.types';
 import { ProfileScreen } from 'screens/tabs/Profile.Screen';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { tabBarOption, tabBarScreenOptions } from 'configs/navigation.configs';
+import {
+  tabBarOption,
+  getTabBarScreenOptions,
+} from 'configs/navigation.configs';
+import { useTheme } from 'theme/ThemeContext';
 
 const TabStack = createBottomTabNavigator<NavigationParamList>();
 
 export const TabRouter: React.FC<
   NativeStackScreenProps<NavigationParamList, Routes.TAB_ROUTER>
 > = () => {
+  const { colors } = useTheme();
+
   return (
     <TabStack.Navigator
       initialRouteName={Routes.MAIN}
-      screenOptions={tabBarScreenOptions}
+      screenOptions={getTabBarScreenOptions(colors)}
     >
       <TabStack.Screen
         name={Routes.MAIN}

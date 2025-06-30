@@ -16,11 +16,6 @@ export const screenOptions: NativeStackNavigationOptions = {
   navigationBarHidden: true,
 };
 
-export const authScreenOptions: NativeStackNavigationOptions = {
-  ...screenOptions,
-  // Remove fixed padding to allow full screen usage
-};
-
 const tabIconConfig = {
   [Routes.MAIN]: require('assets/vectors/home.svg'),
   [Routes.PROFILE]: require('assets/vectors/profile.svg'),
@@ -45,28 +40,34 @@ const tabBarButton = (props: BottomTabBarButtonProps) => {
   );
 };
 
-export const tabBarScreenOptions: BottomTabNavigationOptions = {
+export const getTabBarScreenOptions = (
+  colors: any,
+): BottomTabNavigationOptions => ({
   headerShown: false,
   animation: 'none',
   tabBarHideOnKeyboard: true,
-  tabBarShowLabel: false,
-  tabBarActiveTintColor: 'blue',
-  tabBarInactiveTintColor: 'gray',
+  tabBarShowLabel: true,
+  tabBarActiveTintColor: colors.primary,
+  tabBarInactiveTintColor: colors.textSecondary,
   tabBarStyle: {
     height: Platform.OS === 'ios' ? scale.vertical(90) : scale.vertical(80),
     paddingTop: 10,
     elevation: 0,
     shadowOpacity: 0,
-    // backgroundColor: colors.neutral[900],
+    backgroundColor: colors.surface,
+    borderTopColor: colors.border,
+    borderTopWidth: 1,
   },
   tabBarButton,
-};
+});
 
 export const tabBarOption = {
   [Routes.MAIN]: {
+    title: 'Main',
     tabBarIcon: renderTabIcon(Routes.MAIN),
   } as BottomTabNavigationOptions,
   [Routes.PROFILE]: {
+    title: 'Profile',
     tabBarIcon: renderTabIcon(Routes.PROFILE),
   },
 };
