@@ -15,7 +15,11 @@ export const AuthRouter: React.FC = () => {
         component={LoginScreen}
         options={screenOptions}
       />
-      <AuthStack.Screen name={Routes.REGISTER} component={RegisterScreen} />
+      <AuthStack.Screen
+        name={Routes.REGISTER}
+        options={screenOptions}
+        component={RegisterScreen}
+      />
     </AuthStack.Navigator>
   );
 };

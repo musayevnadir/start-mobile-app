@@ -14,6 +14,7 @@ import { useTheme } from 'theme/ThemeContext';
 import { scale } from 'theme/metrics';
 import { typography } from 'theme/typograpy';
 import { CommonStyles } from 'theme/common.styles';
+import { SvgImage } from 'components/SvgImage';
 
 const listItems = [
   {
@@ -61,9 +62,7 @@ export const ListScreen: React.FC<
   };
 
   return (
-    <SafeAreaView
-      style={[CommonStyles.flex, { backgroundColor: colors.background }]}
-    >
+    <SafeAreaView style={[styles.root, { backgroundColor: colors.background }]}>
       <ScrollView
         style={CommonStyles.flex}
         contentContainerStyle={styles.scrollContent}
@@ -127,8 +126,14 @@ export const ListScreen: React.FC<
           onPress={() => navigation.goBack()}
           activeOpacity={0.8}
         >
+          <SvgImage
+            width={16}
+            height={16}
+            color={colors.surface}
+            source={require('assets/vectors/arrow.goBack.svg')}
+          />
           <Text style={[styles.backButtonText, { color: colors.surface }]}>
-            ← Go Back
+            Go Back
           </Text>
         </TouchableOpacity>
       </ScrollView>
@@ -137,6 +142,11 @@ export const ListScreen: React.FC<
 };
 
 const styles = StyleSheet.create({
+  root: {
+    ...CommonStyles.flex,
+    paddingTop: scale.vertical(16),
+    paddingBottom: scale.vertical(12),
+  },
   scrollContent: {
     flexGrow: 1,
     padding: scale.horizontal(16),
@@ -199,16 +209,9 @@ const styles = StyleSheet.create({
   },
   backButton: {
     padding: scale.vertical(16),
-    borderRadius: scale.moderate(12),
-    alignItems: 'center',
-    elevation: 3,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.15,
-    shadowRadius: 3,
+    borderRadius: scale.moderate(8),
+    ...CommonStyles.alignJustifyCenterRow,
+    gap: scale.horizontal(12),
   },
   backButtonText: {
     textAlign: 'center',

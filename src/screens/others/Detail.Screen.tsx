@@ -14,6 +14,7 @@ import { useTheme } from 'theme/ThemeContext';
 import { scale } from 'theme/metrics';
 import { typography } from 'theme/typograpy';
 import { CommonStyles } from 'theme/common.styles';
+import { SvgImage } from 'components/SvgImage';
 
 export const DetailScreen: React.FC<
   NativeStackScreenProps<NavigationParamList, Routes.DETAIL>
@@ -21,9 +22,7 @@ export const DetailScreen: React.FC<
   const { colors } = useTheme();
 
   return (
-    <SafeAreaView
-      style={[CommonStyles.flex, { backgroundColor: colors.background }]}
-    >
+    <SafeAreaView style={[styles.root, { backgroundColor: colors.background }]}>
       <ScrollView
         style={CommonStyles.flex}
         contentContainerStyle={styles.scrollContent}
@@ -112,8 +111,14 @@ export const DetailScreen: React.FC<
           onPress={() => navigation.goBack()}
           activeOpacity={0.8}
         >
+          <SvgImage
+            width={16}
+            height={16}
+            color={colors.surface}
+            source={require('assets/vectors/arrow.goBack.svg')}
+          />
           <Text style={[styles.backButtonText, { color: colors.surface }]}>
-            ← Go Back
+            Go Back
           </Text>
         </TouchableOpacity>
       </ScrollView>
@@ -122,6 +127,11 @@ export const DetailScreen: React.FC<
 };
 
 const styles = StyleSheet.create({
+  root: {
+    ...CommonStyles.flex,
+    paddingTop: scale.vertical(16),
+    paddingBottom: scale.vertical(12),
+  },
   scrollContent: {
     flexGrow: 1,
     padding: scale.horizontal(16),
@@ -165,7 +175,8 @@ const styles = StyleSheet.create({
   backButton: {
     padding: scale.vertical(16),
     borderRadius: scale.moderate(8),
-    alignItems: 'center',
+    ...CommonStyles.alignJustifyCenterRow,
+    gap: scale.horizontal(12),
   },
   buttonText: {
     textAlign: 'center',

@@ -23,9 +23,7 @@ export const MainScreen: React.FC<
   const { colors } = useTheme();
 
   return (
-    <SafeAreaView
-      style={[CommonStyles.flex, { backgroundColor: colors.background }]}
-    >
+    <SafeAreaView style={[styles.root, { backgroundColor: colors.background }]}>
       <ScrollView
         style={CommonStyles.flex}
         contentContainerStyle={styles.scrollContent}
@@ -79,6 +77,10 @@ export const MainScreen: React.FC<
 };
 
 const styles = StyleSheet.create({
+  root: {
+    ...CommonStyles.flex,
+    paddingTop: scale.vertical(16),
+  },
   scrollContent: {
     flexGrow: 1,
     padding: scale.horizontal(16),
