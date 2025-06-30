@@ -21,7 +21,9 @@ export const QuickThemeToggle: React.FC = () => {
       ]}
     >
       <Text>{isDark ? '🌙' : '☀️'}</Text>
-      <Text style={typography.FootnoteBold12}>{isDark ? 'Dark' : 'Light'}</Text>
+      <Text style={[typography.FootnoteBold12, { color: colors.text }]}>
+        {isDark ? 'Dark' : 'Light'}
+      </Text>
     </TouchableOpacity>
   );
 };
