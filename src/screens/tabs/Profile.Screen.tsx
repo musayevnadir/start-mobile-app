@@ -7,6 +7,7 @@ import {
   ScrollView,
 } from 'react-native';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { NavigationParamList } from 'types/navigator.types';
 import { Routes } from 'router/routes';
@@ -19,6 +20,7 @@ import { CommonStyles } from 'theme/common.styles';
 export const ProfileScreen: React.FC<
   NativeStackScreenProps<NavigationParamList, Routes.PROFILE>
 > = ({ navigation }) => {
+  const { t } = useTranslation();
   const { colors } = useTheme();
 
   return (
@@ -30,15 +32,13 @@ export const ProfileScreen: React.FC<
       >
         <View style={[styles.header, { backgroundColor: colors.surface }]}>
           <Text style={[styles.title, { color: colors.text }]}>
-            Profile Screen
+            {t('MAIN.PROFILE_SCREEN')}
           </Text>
           <Text style={[styles.subtitle, { color: colors.textSecondary }]}>
-            Manage your profile settings and navigate to other sections.
+            {t('MAIN.MANAGE_YOUR_PROFILE')}
           </Text>
         </View>
-
         <ThemeToggle />
-
         <View style={styles.buttonsContainer}>
           <TouchableOpacity
             style={[styles.button, { backgroundColor: colors.primary }]}
@@ -49,10 +49,10 @@ export const ProfileScreen: React.FC<
               📄
             </Text>
             <Text style={[styles.buttonText, { color: colors.surface }]}>
-              Go to Detail Screen
+              {t('MAIN.GO_TO_DETAIL_SCREEN')}
             </Text>
             <Text style={[styles.buttonSubtext, { color: colors.surface }]}>
-              View detailed information
+              {t('MAIN.VIEW_DETAILED_INFORMATION')}
             </Text>
           </TouchableOpacity>
 
@@ -65,10 +65,10 @@ export const ProfileScreen: React.FC<
               📋
             </Text>
             <Text style={[styles.buttonText, { color: colors.surface }]}>
-              Go to List Screen
+              {t('MAIN.GO_TO_LIST_SCREEN')}
             </Text>
             <Text style={[styles.buttonSubtext, { color: colors.surface }]}>
-              Browse items list
+              {t('MAIN.BROWSE_ITEMS_LIST')}
             </Text>
           </TouchableOpacity>
         </View>
@@ -116,9 +116,8 @@ const styles = StyleSheet.create({
   button: {
     padding: scale.vertical(20),
     borderRadius: scale.moderate(12),
-    alignItems: 'center',
+    ...CommonStyles.alignJustifyCenter,
     minHeight: scale.vertical(100),
-    justifyContent: 'center',
     elevation: 3,
     shadowColor: '#000',
     shadowOffset: {
@@ -141,5 +140,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     ...typography.FootnoteRegular12,
     opacity: 0.9,
+  },
+  languageSection: {
+    marginTop: scale.vertical(16),
+    marginBottom: scale.vertical(16),
+  },
+  sectionTitle: {
+    ...typography.HeadlineMedium16,
+    marginBottom: scale.vertical(12),
   },
 });

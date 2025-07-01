@@ -71,3 +71,14 @@ export const tabBarOption = {
     tabBarIcon: renderTabIcon(Routes.PROFILE),
   },
 };
+
+export const getTabBarOption = (t: (key: string) => string) => ({
+  [Routes.MAIN]: {
+    title: t('NAVIGATION.MAIN'),
+    tabBarIcon: renderTabIcon(Routes.MAIN),
+  } as BottomTabNavigationOptions,
+  [Routes.PROFILE]: {
+    title: t('NAVIGATION.PROFILE'),
+    tabBarIcon: renderTabIcon(Routes.PROFILE),
+  },
+});

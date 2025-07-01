@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Routes } from 'router/routes';
 import {
   View,
@@ -19,6 +20,7 @@ import { SvgImage } from 'components/SvgImage';
 export const DetailScreen: React.FC<
   NativeStackScreenProps<NavigationParamList, Routes.DETAIL>
 > = ({ navigation }) => {
+  const { t } = useTranslation();
   const { colors } = useTheme();
 
   return (
@@ -30,11 +32,10 @@ export const DetailScreen: React.FC<
       >
         <View style={[styles.header, { backgroundColor: colors.surface }]}>
           <Text style={[styles.title, { color: colors.text }]}>
-            Detail Screen
+            {t('MAIN.DETAIL_SCREEN')}
           </Text>
           <Text style={[styles.subtitle, { color: colors.textSecondary }]}>
-            This is the detail screen with comprehensive information about the
-            selected item.
+            {t('MAIN.DETAIL_SCREEN_SUBTITLE')}
           </Text>
         </View>
 

@@ -16,8 +16,6 @@ import { StatusBarManager } from 'components/StatusBarManager';
 function AppContent() {
   const { colors } = useTheme();
 
-  console.log(colors);
-
   return (
     <Fragment>
       <StatusBarManager />

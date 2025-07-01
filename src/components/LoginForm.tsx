@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   View,
   Text,
@@ -16,6 +17,7 @@ import { typography } from 'theme/typograpy';
 import { CommonStyles } from 'theme/common.styles';
 
 export const LoginForm: React.FC = () => {
+  const { t } = useTranslation();
   const { colors } = useTheme();
 
   const navigation =
@@ -25,16 +27,16 @@ export const LoginForm: React.FC = () => {
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    // Here you can add login logic
-    // For now, we'll navigate to MAIN_ROUTER
     navigation.navigate(Routes.MAIN_ROUTER);
   };
 
   return (
     <View style={[styles.container, { backgroundColor: colors.surface }]}>
-      <Text style={[styles.title, { color: colors.text }]}>Welcome Back</Text>
+      <Text style={[styles.title, { color: colors.text }]}>
+        {t('AUTH.WELCOME_BACK')}
+      </Text>
       <Text style={[styles.subtitle, { color: colors.textSecondary }]}>
-        Sign in to continue
+        {t('AUTH.SIGN_IN_TO_CONTINUE')}
       </Text>
       <View style={styles.formContainer}>
         <TextInput
@@ -47,7 +49,7 @@ export const LoginForm: React.FC = () => {
             },
           ]}
           value={email}
-          placeholder="Email"
+          placeholder={t('AUTH.EMAIL')}
           placeholderTextColor={colors.textSecondary}
           onChangeText={setEmail}
           keyboardType="email-address"
@@ -62,7 +64,7 @@ export const LoginForm: React.FC = () => {
               color: colors.text,
             },
           ]}
-          placeholder="Password"
+          placeholder={t('AUTH.PASSWORD')}
           placeholderTextColor={colors.textSecondary}
           value={password}
           onChangeText={setPassword}
@@ -70,7 +72,7 @@ export const LoginForm: React.FC = () => {
         />
         <TouchableOpacity style={styles.forgotPassword}>
           <Text style={[typography.BodyRegular14, { color: colors.primary }]}>
-            Forgot Password?
+            {t('AUTH.FORGOT_PASSWORD')}
           </Text>
         </TouchableOpacity>
         <View style={styles.buttonContainer}>
@@ -86,7 +88,7 @@ export const LoginForm: React.FC = () => {
             <Text
               style={[typography.HeadlineMedium16, { color: colors.surface }]}
             >
-              Sign In
+              {t('AUTH.SIGN_IN')}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -102,7 +104,7 @@ export const LoginForm: React.FC = () => {
             <Text
               style={[typography.HeadlineMedium16, { color: colors.primary }]}
             >
-              Create Account
+              {t('AUTH.CREATE_ACCOUNT')}
             </Text>
           </TouchableOpacity>
         </View>

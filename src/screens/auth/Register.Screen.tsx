@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Routes } from 'router/routes';
 import {
   View,
@@ -18,6 +19,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 export const RegisterScreen: React.FC<
   NativeStackScreenProps<NavigationParamList, Routes.REGISTER>
 > = ({ navigation }) => {
+  const { t } = useTranslation();
   const { colors } = useTheme();
   const [formData, setFormData] = useState({
     firstName: '',
@@ -33,7 +35,7 @@ export const RegisterScreen: React.FC<
 
   const handleRegister = () => {
     // Add registration logic here
-    console.log('Register:', formData);
+
     // Navigate to login or main app
     navigation.goBack();
   };
@@ -45,10 +47,10 @@ export const RegisterScreen: React.FC<
     >
       <View style={[styles.formCard, { backgroundColor: colors.surface }]}>
         <Text style={[styles.title, { color: colors.text }]}>
-          Create Account
+          {t('AUTH.CREATE_ACCOUNT')}
         </Text>
         <Text style={[styles.subtitle, { color: colors.textSecondary }]}>
-          Sign up to get started
+          {t('AUTH.SIGN_UP_TO_GET_STARTED')}
         </Text>
         <View style={styles.inputContainer}>
           <TextInput
@@ -61,7 +63,7 @@ export const RegisterScreen: React.FC<
               },
             ]}
             value={formData.firstName}
-            placeholder="First Name"
+            placeholder={t('AUTH.FIRST_NAME')}
             placeholderTextColor={colors.textSecondary}
             onChangeText={value => handleInputChange('firstName', value)}
             autoCapitalize="words"
@@ -77,7 +79,7 @@ export const RegisterScreen: React.FC<
               },
             ]}
             value={formData.lastName}
-            placeholder="Last Name"
+            placeholder={t('AUTH.LAST_NAME')}
             placeholderTextColor={colors.textSecondary}
             onChangeText={value => handleInputChange('lastName', value)}
             autoCapitalize="words"
@@ -93,7 +95,7 @@ export const RegisterScreen: React.FC<
               },
             ]}
             value={formData.email}
-            placeholder="Email"
+            placeholder={t('AUTH.EMAIL')}
             placeholderTextColor={colors.textSecondary}
             onChangeText={value => handleInputChange('email', value)}
             keyboardType="email-address"
@@ -109,7 +111,7 @@ export const RegisterScreen: React.FC<
               },
             ]}
             value={formData.password}
-            placeholder="Password"
+            placeholder={t('AUTH.PASSWORD')}
             placeholderTextColor={colors.textSecondary}
             onChangeText={value => handleInputChange('password', value)}
             secureTextEntry
@@ -124,7 +126,7 @@ export const RegisterScreen: React.FC<
               },
             ]}
             value={formData.confirmPassword}
-            placeholder="Confirm Password"
+            placeholder={t('AUTH.CONFIRM_PASSWORD')}
             placeholderTextColor={colors.textSecondary}
             onChangeText={value => handleInputChange('confirmPassword', value)}
             secureTextEntry
@@ -143,7 +145,7 @@ export const RegisterScreen: React.FC<
             <Text
               style={[typography.HeadlineMedium16, { color: colors.surface }]}
             >
-              Create Account
+              {t('AUTH.CREATE_ACCOUNT')}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -159,7 +161,7 @@ export const RegisterScreen: React.FC<
             <Text
               style={[typography.HeadlineMedium16, { color: colors.primary }]}
             >
-              Back to Login
+              {t('AUTH.BACK_TO_LOGIN')}
             </Text>
           </TouchableOpacity>
         </View>

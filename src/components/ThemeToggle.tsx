@@ -3,6 +3,7 @@ import { scale } from 'theme/metrics';
 import { typography } from 'theme/typograpy';
 import { useTheme, type ThemeMode } from 'theme/ThemeContext';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 interface ThemeOption {
   mode: ThemeMode;
@@ -10,14 +11,15 @@ interface ThemeOption {
   icon: string;
 }
 
-const themeOptions: ThemeOption[] = [
-  { mode: 'light', label: 'Light', icon: '☀️' },
-  { mode: 'dark', label: 'Dark', icon: '🌙' },
-  { mode: 'system', label: 'System', icon: '⚙️' },
-];
-
 export const ThemeToggle: React.FC = () => {
   const { colors, mode, setThemeMode } = useTheme();
+  const { t } = useTranslation();
+
+  const themeOptions: ThemeOption[] = [
+    { mode: 'light', label: t('THEME.LIGHT'), icon: '☀️' },
+    { mode: 'dark', label: t('THEME.DARK'), icon: '🌙' },
+    { mode: 'system', label: t('THEME.SYSTEM'), icon: '⚙️' },
+  ];
 
   const handleThemeChange = (selectedMode: ThemeMode) => {
     setThemeMode(selectedMode);
@@ -26,7 +28,7 @@ export const ThemeToggle: React.FC = () => {
   return (
     <View style={[styles.container, { backgroundColor: colors.surface }]}>
       <Text style={[styles.title, { color: colors.text }]}>
-        Theme Preference
+        {t('THEME.THEME_PREFERENCE')}
       </Text>
       <View style={styles.optionsContainer}>
         {themeOptions.map(option => (

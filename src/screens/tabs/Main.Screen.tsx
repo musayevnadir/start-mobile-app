@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import {
   View,
@@ -13,17 +14,24 @@ import { scale } from 'theme/metrics';
 import { useTheme } from 'theme/ThemeContext';
 import { NavigationParamList } from 'types/navigator.types';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-
 import { typography } from 'theme/typograpy';
 import { CommonStyles } from 'theme/common.styles';
+import { LanguageToggle } from 'components/LanguageToggle';
 
 export const MainScreen: React.FC<
   NativeStackScreenProps<NavigationParamList, Routes.MAIN>
 > = ({ navigation }) => {
+  const { t } = useTranslation();
   const { colors } = useTheme();
 
   return (
     <SafeAreaView style={[styles.root, { backgroundColor: colors.background }]}>
+      <View style={[styles.topHeader, { backgroundColor: colors.surface }]}>
+        <Text style={[styles.appTitle, { color: colors.text }]}>
+          {t('MAIN.MAIN_SCREEN')}
+        </Text>
+        <LanguageToggle />
+      </View>
       <ScrollView
         style={CommonStyles.flex}
         contentContainerStyle={styles.scrollContent}
@@ -31,14 +39,12 @@ export const MainScreen: React.FC<
       >
         <View style={[styles.header, { backgroundColor: colors.surface }]}>
           <Text style={[styles.title, { color: colors.text }]}>
-            Main Screen
+            {t('MAIN.MAIN_SCREEN')}
           </Text>
           <Text style={[styles.subtitle, { color: colors.textSecondary }]}>
-            Welcome to the main screen. Navigate to other sections using the
-            buttons below.
+            {t('MAIN.WELCOME_TO_MAIN_SCREEN')}
           </Text>
         </View>
-
         <View style={styles.buttonsContainer}>
           <TouchableOpacity
             style={[styles.button, { backgroundColor: colors.primary }]}
@@ -49,10 +55,10 @@ export const MainScreen: React.FC<
               📄
             </Text>
             <Text style={[styles.buttonText, { color: colors.surface }]}>
-              Go to Detail Screen
+              {t('MAIN.GO_TO_DETAIL_SCREEN')}
             </Text>
             <Text style={[styles.buttonSubtext, { color: colors.surface }]}>
-              View detailed information
+              {t('MAIN.VIEW_DETAILED_INFORMATION')}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -64,10 +70,10 @@ export const MainScreen: React.FC<
               📋
             </Text>
             <Text style={[styles.buttonText, { color: colors.surface }]}>
-              Go to List Screen
+              {t('MAIN.GO_TO_LIST_SCREEN')}
             </Text>
             <Text style={[styles.buttonSubtext, { color: colors.surface }]}>
-              Browse items list
+              {t('MAIN.BROWSE_ITEMS_LIST')}
             </Text>
           </TouchableOpacity>
         </View>
@@ -80,6 +86,22 @@ const styles = StyleSheet.create({
   root: {
     ...CommonStyles.flex,
     paddingTop: scale.vertical(16),
+  },
+  topHeader: {
+    paddingHorizontal: scale.horizontal(16),
+    paddingVertical: scale.vertical(12),
+    ...CommonStyles.alignCenterJustifyBetweenRow,
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+  },
+  appTitle: {
+    ...typography.HeadlineBold18,
   },
   scrollContent: {
     flexGrow: 1,
@@ -115,9 +137,9 @@ const styles = StyleSheet.create({
   button: {
     padding: scale.vertical(20),
     borderRadius: scale.moderate(12),
-    alignItems: 'center',
+    ...CommonStyles.alignJustifyCenter,
     minHeight: scale.vertical(100),
-    justifyContent: 'center',
+
     elevation: 3,
     shadowColor: '#000',
     shadowOffset: {

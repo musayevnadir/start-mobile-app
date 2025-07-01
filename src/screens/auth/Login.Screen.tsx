@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Routes } from 'router/routes';
 import { scale } from 'theme/metrics';
 import { typography } from 'theme/typograpy';
@@ -13,6 +14,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 export const LoginScreen: React.FC<
   NativeStackScreenProps<NavigationParamList, Routes.LOGIN>
 > = () => {
+  const { t } = useTranslation();
   const { colors } = useTheme();
 
   return (
@@ -28,7 +30,7 @@ export const LoginScreen: React.FC<
               Start Mobile App!
             </Text>
             <Text style={[styles.subtitle, { color: colors.textSecondary }]}>
-              Choose your theme and sign in
+              {t('AUTH.CHOOSE_YOUR_THEME_AND_SIGN_IN')}
             </Text>
           </View>
           <QuickThemeToggle />

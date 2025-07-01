@@ -2241,6 +2241,35 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
+  - RNLocalize (3.4.2):
+    - boost
+    - DoubleConversion
+    - fast_float
+    - fmt
+    - glog
+    - hermes-engine
+    - RCT-Folly
+    - RCT-Folly/Fabric
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-hermes
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - SocketRocket
+    - Yoga
   - RNScreens (4.11.1):
     - boost
     - DoubleConversion
@@ -2439,6 +2468,7 @@ DEPENDENCIES:
   - ReactCodegen (from `build/generated/ios`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
+  - RNLocalize (from `../node_modules/react-native-localize`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - SocketRocket (~> 0.7.1)
@@ -2596,6 +2626,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
+  RNLocalize:
+    :path: "../node_modules/react-native-localize"
   RNScreens:
     :path: "../node_modules/react-native-screens"
   RNSVG:
@@ -2677,6 +2709,7 @@ SPEC CHECKSUMS:
   ReactCodegen: 304f881dea867b659e4ba479608ec06f8117e0c5
   ReactCommon: 658874decaf8c4fd76cfa3a878b94a869db85b1c
   RNCAsyncStorage: 767abb068db6ad28b5f59a129fbc9fab18b377e2
+  RNLocalize: 0a1b974e167259ce2f28d87299d3c5bb4cdd1fb9
   RNScreens: 45a4564413205e2a1695d40bbc0297f6eefc9b74
   RNSVG: c73af7848d94ca3e8136a5191d055e3c1d6fedab
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
