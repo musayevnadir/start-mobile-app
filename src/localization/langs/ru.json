@@ -14,7 +14,8 @@
     "LAST_NAME": "Фамилия",
     "CONFIRM_PASSWORD": "Подтвердите пароль",
     "BACK_TO_LOGIN": "Назад к входу",
-    "CHOOSE_YOUR_THEME_AND_SIGN_IN": "Выберите тему и войдите"
+    "CHOOSE_YOUR_THEME_AND_SIGN_IN": "Выберите тему и войдите",
+    "LOG_OUT": "Выйти"
   },
   "MAIN": {
     "MAIN_SCREEN": "Главный экран",

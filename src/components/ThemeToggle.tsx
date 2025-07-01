@@ -66,9 +66,8 @@ export const ThemeToggle: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: scale.vertical(20),
+    padding: scale.vertical(14),
     borderRadius: scale.moderate(12),
-    margin: scale.vertical(16),
   },
   title: {
     ...typography.HeadlineBold18,

@@ -55,7 +55,6 @@ export const ProfileScreen: React.FC<
               {t('MAIN.VIEW_DETAILED_INFORMATION')}
             </Text>
           </TouchableOpacity>
-
           <TouchableOpacity
             style={[styles.button, { backgroundColor: colors.primary }]}
             onPress={() => navigation.navigate(Routes.LIST)}
@@ -72,6 +71,22 @@ export const ProfileScreen: React.FC<
             </Text>
           </TouchableOpacity>
         </View>
+        ƒ
+        <TouchableOpacity
+          style={[
+            styles.logoutButton,
+            {
+              backgroundColor: colors.backgroundSecondary,
+              borderColor: colors.border,
+            },
+          ]}
+          onPress={() => console.log('Log out pressed')}
+          activeOpacity={0.8}
+        >
+          <Text style={[styles.logoutText, { color: colors.textSecondary }]}>
+            {t('AUTH.LOG_OUT')}
+          </Text>
+        </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );
@@ -118,14 +133,6 @@ const styles = StyleSheet.create({
     borderRadius: scale.moderate(12),
     ...CommonStyles.alignJustifyCenter,
     minHeight: scale.vertical(100),
-    elevation: 3,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.15,
-    shadowRadius: 3,
   },
   buttonIcon: {
     ...typography.HeadlineRegular24,
@@ -148,5 +155,20 @@ const styles = StyleSheet.create({
   sectionTitle: {
     ...typography.HeadlineMedium16,
     marginBottom: scale.vertical(12),
+  },
+  logoutButton: {
+    borderWidth: 1,
+    padding: scale.vertical(16),
+    marginTop: scale.vertical(24),
+    borderRadius: scale.moderate(12),
+    marginBottom: scale.vertical(20),
+    gap: scale.horizontal(12),
+    ...CommonStyles.alignJustifyCenterRow,
+  },
+  logoutIcon: {
+    ...typography.HeadlineRegular20,
+  },
+  logoutText: {
+    ...typography.HeadlineMedium16,
   },
 });

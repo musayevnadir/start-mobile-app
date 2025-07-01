@@ -14,7 +14,8 @@
     "LAST_NAME": "Last Name",
     "CONFIRM_PASSWORD": "Confirm Password",
     "BACK_TO_LOGIN": "Back to Login",
-    "CHOOSE_YOUR_THEME_AND_SIGN_IN": "Choose your theme and sign in"
+    "CHOOSE_YOUR_THEME_AND_SIGN_IN": "Choose your theme and sign in",
+    "LOG_OUT": "Log Out"
   },
   "MAIN": {
     "MAIN_SCREEN": "Main Screen",
