@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     flex: 1,
     borderWidth: 1,
     alignItems: 'center',
-    padding: scale.vertical(16),
+    padding: scale.vertical(10),
     borderRadius: scale.moderate(8),
   },
   icon: {

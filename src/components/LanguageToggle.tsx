@@ -124,7 +124,7 @@ export const LanguageToggle: React.FC = () => {
                 >
                   <Text
                     style={[
-                      styles.languageOptionFlag,
+                      typography.HeadlineMedium18,
                       {
                         color:
                           currentLanguage === language.code
@@ -184,24 +184,15 @@ const styles = StyleSheet.create({
     ...CommonStyles.alignJustifyCenter,
   },
   modalContent: {
+    borderWidth: 1,
     width: width * 0.8,
+    padding: scale.vertical(24),
     maxWidth: scale.horizontal(300),
     borderRadius: scale.moderate(12),
-    padding: scale.vertical(24),
-    borderWidth: 1,
-    elevation: 5,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
   },
   modalTitle: {
     textAlign: 'center',
     ...typography.HeadlineMedium16,
-
     marginBottom: scale.vertical(20),
   },
   languagesList: {
@@ -209,14 +200,10 @@ const styles = StyleSheet.create({
   },
   languageOption: {
     borderWidth: 1,
+    gap: scale.horizontal(12),
     padding: scale.vertical(16),
     borderRadius: scale.moderate(8),
     ...CommonStyles.justifyCenterRow,
-
-    gap: scale.horizontal(12),
-  },
-  languageOptionFlag: {
-    fontSize: scale.moderate(20),
   },
   languageOptionText: {
     flex: 1,
