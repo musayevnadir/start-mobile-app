@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Routes } from 'router/routes';
 import {
@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   ScrollView,
+  Alert,
 } from 'react-native';
 import { scale } from 'theme/metrics';
 import { typography } from 'theme/typograpy';
@@ -15,12 +16,22 @@ import { useTheme } from 'theme/ThemeContext';
 import { CommonStyles } from 'theme/common.styles';
 import { NavigationParamList } from 'types/navigator.types';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import {
+  useAppDispatch,
+  useAppSelector,
+  selectLastOperationSuccess,
+} from 'store';
+import { register, clearLastOperationResult } from 'store/slices/authSlice';
+import { SvgImage } from 'components/SvgImage';
 
 export const RegisterScreen: React.FC<
   NativeStackScreenProps<NavigationParamList, Routes.REGISTER>
 > = ({ navigation }) => {
   const { t } = useTranslation();
   const { colors } = useTheme();
+  const dispatch = useAppDispatch();
+  const lastOperationSuccess = useAppSelector(selectLastOperationSuccess);
+
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -28,16 +39,73 @@ export const RegisterScreen: React.FC<
     password: '',
     confirmPassword: '',
   });
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isRegistering, setIsRegistering] = useState(false);
+
+  const togglePasswordVisibility = () => setShowPassword(!showPassword);
+  const toggleConfirmPasswordVisibility = () =>
+    setShowConfirmPassword(!showConfirmPassword);
+
+  useEffect(() => {
+    if (lastOperationSuccess === true && isRegistering) {
+      setIsRegistering(false);
+      Alert.alert(t('AUTH.SUCCESS'), t('AUTH.REGISTRATION_SUCCESS'), [
+        {
+          text: 'OK',
+          onPress: () => {
+            dispatch(clearLastOperationResult());
+          },
+        },
+      ]);
+    }
+  }, [lastOperationSuccess, isRegistering, t, dispatch]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearLastOperationResult());
+    };
+  }, [dispatch]);
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
   const handleRegister = () => {
-    // Add registration logic here
+    if (!formData.firstName.trim()) {
+      Alert.alert(t('AUTH.ERROR'), t('AUTH.ENTER_FIRST_NAME'));
+      return;
+    }
 
-    // Navigate to login or main app
-    navigation.goBack();
+    if (!formData.lastName.trim()) {
+      Alert.alert(t('AUTH.ERROR'), t('AUTH.ENTER_LAST_NAME'));
+      return;
+    }
+
+    if (!formData.email.trim()) {
+      Alert.alert(t('AUTH.ERROR'), t('AUTH.ENTER_EMAIL'));
+      return;
+    }
+
+    if (!formData.password.trim()) {
+      Alert.alert(t('AUTH.ERROR'), t('AUTH.ENTER_PASSWORD'));
+      return;
+    }
+
+    if (formData.password !== formData.confirmPassword) {
+      Alert.alert(t('AUTH.ERROR'), t('AUTH.PASSWORDS_DO_NOT_MATCH'));
+      return;
+    }
+
+    setIsRegistering(true);
+    dispatch(
+      register({
+        email: formData.email,
+        password: formData.password,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+      }),
+    );
   };
 
   return (
@@ -67,6 +135,8 @@ export const RegisterScreen: React.FC<
             placeholderTextColor={colors.textSecondary}
             onChangeText={value => handleInputChange('firstName', value)}
             autoCapitalize="words"
+            autoComplete="name-given"
+            textContentType="givenName"
           />
 
           <TextInput
@@ -83,8 +153,9 @@ export const RegisterScreen: React.FC<
             placeholderTextColor={colors.textSecondary}
             onChangeText={value => handleInputChange('lastName', value)}
             autoCapitalize="words"
+            autoComplete="name-family"
+            textContentType="familyName"
           />
-
           <TextInput
             style={[
               styles.input,
@@ -100,37 +171,83 @@ export const RegisterScreen: React.FC<
             onChangeText={value => handleInputChange('email', value)}
             keyboardType="email-address"
             autoCapitalize="none"
+            autoComplete="email"
+            textContentType="emailAddress"
           />
-          <TextInput
-            style={[
-              styles.input,
-              {
-                backgroundColor: colors.backgroundSecondary,
-                borderColor: colors.border,
-                color: colors.text,
-              },
-            ]}
-            value={formData.password}
-            placeholder={t('AUTH.PASSWORD')}
-            placeholderTextColor={colors.textSecondary}
-            onChangeText={value => handleInputChange('password', value)}
-            secureTextEntry
-          />
-          <TextInput
-            style={[
-              styles.input,
-              {
-                backgroundColor: colors.backgroundSecondary,
-                borderColor: colors.border,
-                color: colors.text,
-              },
-            ]}
-            value={formData.confirmPassword}
-            placeholder={t('AUTH.CONFIRM_PASSWORD')}
-            placeholderTextColor={colors.textSecondary}
-            onChangeText={value => handleInputChange('confirmPassword', value)}
-            secureTextEntry
-          />
+          <View style={styles.passwordContainer}>
+            <TextInput
+              style={[
+                styles.passwordInput,
+                {
+                  backgroundColor: colors.backgroundSecondary,
+                  borderColor: colors.border,
+                  color: colors.text,
+                },
+              ]}
+              value={formData.password}
+              placeholder={t('AUTH.PASSWORD')}
+              placeholderTextColor={colors.textSecondary}
+              onChangeText={value => handleInputChange('password', value)}
+              secureTextEntry={!showPassword}
+              autoComplete="off"
+              textContentType="none"
+              passwordRules=""
+            />
+            <TouchableOpacity
+              style={styles.eyeButton}
+              onPress={togglePasswordVisibility}
+              activeOpacity={0.7}
+            >
+              <SvgImage
+                color={colors.textSecondary}
+                width={24}
+                height={24}
+                source={
+                  !showPassword
+                    ? require('assets/vectors/eye.svg')
+                    : require('assets/vectors/eye-off.svg')
+                }
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.passwordContainer}>
+            <TextInput
+              style={[
+                styles.passwordInput,
+                {
+                  backgroundColor: colors.backgroundSecondary,
+                  borderColor: colors.border,
+                  color: colors.text,
+                },
+              ]}
+              value={formData.confirmPassword}
+              placeholder={t('AUTH.CONFIRM_PASSWORD')}
+              placeholderTextColor={colors.textSecondary}
+              onChangeText={value =>
+                handleInputChange('confirmPassword', value)
+              }
+              secureTextEntry={!showConfirmPassword}
+              autoComplete="off"
+              textContentType="none"
+              passwordRules=""
+            />
+            <TouchableOpacity
+              style={styles.eyeButton}
+              onPress={toggleConfirmPasswordVisibility}
+              activeOpacity={0.7}
+            >
+              <SvgImage
+                color={colors.textSecondary}
+                width={24}
+                height={24}
+                source={
+                  !showConfirmPassword
+                    ? require('assets/vectors/eye.svg')
+                    : require('assets/vectors/eye-off.svg')
+                }
+              />
+            </TouchableOpacity>
+          </View>
         </View>
         <View style={styles.buttonContainer}>
           <TouchableOpacity
@@ -200,6 +317,24 @@ const styles = StyleSheet.create({
     paddingHorizontal: scale.horizontal(16),
     paddingVertical: scale.vertical(12),
     ...typography.BodyRegular16,
+  },
+  passwordContainer: {
+    position: 'relative',
+    marginBottom: scale.vertical(16),
+  },
+  passwordInput: {
+    borderWidth: 1,
+    borderRadius: scale.moderate(8),
+    paddingHorizontal: scale.horizontal(16),
+    paddingVertical: scale.vertical(12),
+    paddingRight: scale.horizontal(50),
+    ...typography.BodyRegular16,
+  },
+  eyeButton: {
+    position: 'absolute',
+    right: scale.horizontal(16),
+    top: scale.vertical(10),
+    padding: scale.moderate(4),
   },
   buttonContainer: {
     gap: scale.vertical(12),

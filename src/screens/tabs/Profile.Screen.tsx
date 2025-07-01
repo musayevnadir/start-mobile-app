@@ -5,6 +5,7 @@ import {
   StyleSheet,
   SafeAreaView,
   ScrollView,
+  Alert,
 } from 'react-native';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -16,12 +17,32 @@ import { scale } from 'theme/metrics';
 import { typography } from 'theme/typograpy';
 import { ThemeToggle } from 'components/ThemeToggle';
 import { CommonStyles } from 'theme/common.styles';
+import { useAppDispatch, useAppSelector, selectUser } from 'store';
+import { logout } from 'store/slices/authSlice';
 
 export const ProfileScreen: React.FC<
   NativeStackScreenProps<NavigationParamList, Routes.PROFILE>
 > = ({ navigation }) => {
   const { t } = useTranslation();
   const { colors } = useTheme();
+  const dispatch = useAppDispatch();
+  const user = useAppSelector(selectUser);
+
+  const handleLogout = () => {
+    Alert.alert(t('AUTH.LOG_OUT'), t('AUTH.LOG_OUT_CONFIRMATION'), [
+      {
+        text: t('COMMON.CANCEL'),
+        style: 'cancel',
+      },
+      {
+        text: t('AUTH.LOG_OUT'),
+        style: 'destructive',
+        onPress: () => {
+          dispatch(logout());
+        },
+      },
+    ]);
+  };
 
   return (
     <SafeAreaView style={[styles.root, { backgroundColor: colors.background }]}>
@@ -35,8 +56,15 @@ export const ProfileScreen: React.FC<
             {t('MAIN.PROFILE_SCREEN')}
           </Text>
           <Text style={[styles.subtitle, { color: colors.textSecondary }]}>
-            {t('MAIN.MANAGE_YOUR_PROFILE')}
+            {user
+              ? `${user.firstName} ${user.lastName}`
+              : t('MAIN.MANAGE_YOUR_PROFILE')}
           </Text>
+          {user && (
+            <Text style={[styles.email, { color: colors.textSecondary }]}>
+              {user.email}
+            </Text>
+          )}
         </View>
         <ThemeToggle />
         <View style={styles.buttonsContainer}>
@@ -71,7 +99,6 @@ export const ProfileScreen: React.FC<
             </Text>
           </TouchableOpacity>
         </View>
-        ƒ
         <TouchableOpacity
           style={[
             styles.logoutButton,
@@ -80,10 +107,15 @@ export const ProfileScreen: React.FC<
               borderColor: colors.border,
             },
           ]}
-          onPress={() => console.log('Log out pressed')}
+          onPress={handleLogout}
           activeOpacity={0.8}
         >
-          <Text style={[styles.logoutText, { color: colors.textSecondary }]}>
+          <Text
+            style={[
+              typography.HeadlineMedium16,
+              { color: colors.textSecondary },
+            ]}
+          >
             {t('AUTH.LOG_OUT')}
           </Text>
         </TouchableOpacity>
@@ -95,7 +127,7 @@ export const ProfileScreen: React.FC<
 const styles = StyleSheet.create({
   root: {
     ...CommonStyles.flex,
-    paddingTop: scale.vertical(16),
+    paddingTop: scale.vertical(22),
   },
   scrollContent: {
     flexGrow: 1,
@@ -123,6 +155,12 @@ const styles = StyleSheet.create({
   subtitle: {
     textAlign: 'center',
     ...typography.BodyRegular14,
+  },
+  email: {
+    textAlign: 'center',
+    ...typography.FootnoteRegular12,
+    marginTop: scale.vertical(4),
+    opacity: 0.8,
   },
   buttonsContainer: {
     gap: scale.vertical(16),
@@ -164,11 +202,5 @@ const styles = StyleSheet.create({
     marginBottom: scale.vertical(20),
     gap: scale.horizontal(12),
     ...CommonStyles.alignJustifyCenterRow,
-  },
-  logoutIcon: {
-    ...typography.HeadlineRegular20,
-  },
-  logoutText: {
-    ...typography.HeadlineMedium16,
   },
 });

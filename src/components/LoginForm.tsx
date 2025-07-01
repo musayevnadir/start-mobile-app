@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   View,
@@ -6,28 +6,68 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  Alert,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { SvgImage } from './SvgImage';
+import { scale } from 'theme/metrics';
 import { Routes } from 'router/routes';
+import { typography } from 'theme/typograpy';
+import { useTheme } from 'theme/ThemeContext';
+import { CommonStyles } from 'theme/common.styles';
+import { useNavigation } from '@react-navigation/native';
 import { NavigationParamList } from 'types/navigator.types';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useTheme } from 'theme/ThemeContext';
-import { scale } from 'theme/metrics';
-import { typography } from 'theme/typograpy';
-import { CommonStyles } from 'theme/common.styles';
+import {
+  useAppDispatch,
+  useAppSelector,
+  selectLastOperationSuccess,
+} from 'store';
+import { login, clearLastOperationResult } from 'store/slices/authSlice';
 
 export const LoginForm: React.FC = () => {
   const { t } = useTranslation();
   const { colors } = useTheme();
+  const dispatch = useAppDispatch();
+  const lastOperationSuccess = useAppSelector(selectLastOperationSuccess);
 
   const navigation =
     useNavigation<NativeStackNavigationProp<NavigationParamList>>();
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('start.mobile.app@gmail.com');
+  const [password, setPassword] = useState('Admin123!');
+  const [showPassword, setShowPassword] = useState(false);
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  useEffect(() => {
+    if (lastOperationSuccess === true && isLoggingIn) {
+      setIsLoggingIn(false);
+      Alert.alert(t('AUTH.SUCCESS'), t('AUTH.LOGIN_SUCCESS'));
+      dispatch(clearLastOperationResult());
+    } else if (lastOperationSuccess === false && isLoggingIn) {
+      setIsLoggingIn(false);
+      Alert.alert(t('AUTH.ERROR'), t('AUTH.INVALID_CREDENTIALS'));
+      dispatch(clearLastOperationResult());
+    }
+  }, [lastOperationSuccess, isLoggingIn, t, dispatch]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearLastOperationResult());
+    };
+  }, [dispatch]);
 
   const handleLogin = () => {
-    navigation.navigate(Routes.MAIN_ROUTER);
+    if (!email.trim() || !password.trim()) {
+      Alert.alert(t('AUTH.ERROR'), t('AUTH.FILL_ALL_FIELDS'));
+      return;
+    }
+
+    setIsLoggingIn(true);
+    dispatch(login({ email, password }));
   };
 
   return (
@@ -54,22 +94,45 @@ export const LoginForm: React.FC = () => {
           onChangeText={setEmail}
           keyboardType="email-address"
           autoCapitalize="none"
+          autoComplete="email"
+          textContentType="emailAddress"
         />
-        <TextInput
-          style={[
-            styles.input,
-            {
-              backgroundColor: colors.backgroundSecondary,
-              borderColor: colors.border,
-              color: colors.text,
-            },
-          ]}
-          placeholder={t('AUTH.PASSWORD')}
-          placeholderTextColor={colors.textSecondary}
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-        />
+        <View style={styles.passwordContainer}>
+          <TextInput
+            style={[
+              styles.passwordInput,
+              {
+                backgroundColor: colors.backgroundSecondary,
+                borderColor: colors.border,
+                color: colors.text,
+              },
+            ]}
+            placeholder={t('AUTH.PASSWORD')}
+            placeholderTextColor={colors.textSecondary}
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry={!showPassword}
+            autoComplete="off"
+            textContentType="none"
+            passwordRules=""
+          />
+          <TouchableOpacity
+            style={styles.eyeButton}
+            onPress={togglePasswordVisibility}
+            activeOpacity={0.7}
+          >
+            <SvgImage
+              color={colors.textSecondary}
+              width={24}
+              height={24}
+              source={
+                !showPassword
+                  ? require('assets/vectors/eye.svg')
+                  : require('assets/vectors/eye-off.svg')
+              }
+            />
+          </TouchableOpacity>
+        </View>
         <TouchableOpacity style={styles.forgotPassword}>
           <Text style={[typography.BodyRegular14, { color: colors.primary }]}>
             {t('AUTH.FORGOT_PASSWORD')}
@@ -108,6 +171,11 @@ export const LoginForm: React.FC = () => {
             </Text>
           </TouchableOpacity>
         </View>
+        <View style={styles.hintContainer}>
+          <Text style={[styles.hintText, { color: colors.textSecondary }]}>
+            💡 Для входа используйте: start.mobile.app@gmail.com / Admin123!
+          </Text>
+        </View>
       </View>
     </View>
   );
@@ -140,6 +208,24 @@ const styles = StyleSheet.create({
     paddingVertical: scale.vertical(12),
     ...typography.BodyRegular16,
   },
+  passwordContainer: {
+    position: 'relative',
+    marginBottom: scale.vertical(16),
+  },
+  passwordInput: {
+    borderWidth: 1,
+    borderRadius: scale.moderate(8),
+    paddingHorizontal: scale.horizontal(16),
+    paddingVertical: scale.vertical(12),
+    paddingRight: scale.horizontal(50),
+    ...typography.BodyRegular16,
+  },
+  eyeButton: {
+    position: 'absolute',
+    right: scale.horizontal(16),
+    top: scale.vertical(10),
+    padding: scale.moderate(4),
+  },
   forgotPassword: {
     alignSelf: 'flex-end',
     marginBottom: scale.vertical(16),
@@ -158,5 +244,17 @@ const styles = StyleSheet.create({
     padding: scale.vertical(16),
     borderRadius: scale.moderate(8),
     ...CommonStyles.flexAlignJustifyCenter,
+  },
+  hintContainer: {
+    marginTop: scale.vertical(20),
+    padding: scale.vertical(12),
+    backgroundColor: 'rgba(0, 122, 255, 0.1)',
+    borderRadius: scale.moderate(8),
+    borderWidth: 1,
+    borderColor: 'rgba(0, 122, 255, 0.2)',
+  },
+  hintText: {
+    textAlign: 'center',
+    ...typography.FootnoteRegular12,
   },
 });

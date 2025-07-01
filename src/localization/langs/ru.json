@@ -15,7 +15,19 @@
     "CONFIRM_PASSWORD": "Подтвердите пароль",
     "BACK_TO_LOGIN": "Назад к входу",
     "CHOOSE_YOUR_THEME_AND_SIGN_IN": "Выберите тему и войдите",
-    "LOG_OUT": "Выйти"
+    "LOG_OUT": "Выйти",
+    "LOG_OUT_CONFIRMATION": "Вы уверены, что хотите выйти?",
+    "SUCCESS": "Успех",
+    "ERROR": "Ошибка",
+    "LOGIN_SUCCESS": "Вы успешно вошли в систему!",
+    "INVALID_CREDENTIALS": "Неверный email или пароль. Используйте: start.mobile.app@gmail.com / Admin123!",
+    "REGISTRATION_SUCCESS": "Регистрация прошла успешно!",
+    "FILL_ALL_FIELDS": "Пожалуйста, заполните все поля",
+    "PASSWORDS_DO_NOT_MATCH": "Пароли не совпадают",
+    "ENTER_FIRST_NAME": "Пожалуйста, введите имя",
+    "ENTER_LAST_NAME": "Пожалуйста, введите фамилию",
+    "ENTER_EMAIL": "Пожалуйста, введите email",
+    "ENTER_PASSWORD": "Пожалуйста, введите пароль"
   },
   "MAIN": {
     "MAIN_SCREEN": "Главный экран",

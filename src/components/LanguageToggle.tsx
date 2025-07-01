@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import {
   View,
   Text,
@@ -61,7 +61,7 @@ export const LanguageToggle: React.FC = () => {
   const currentLangInfo = getCurrentLanguageInfo();
 
   return (
-    <>
+    <Fragment>
       <TouchableOpacity
         style={[
           styles.languageButton,
@@ -137,7 +137,8 @@ export const LanguageToggle: React.FC = () => {
                   </Text>
                   <Text
                     style={[
-                      styles.languageOptionText,
+                      typography.BodyMedium14,
+                      CommonStyles.flex,
                       {
                         color:
                           currentLanguage === language.code
@@ -164,7 +165,7 @@ export const LanguageToggle: React.FC = () => {
           </View>
         </TouchableOpacity>
       </Modal>
-    </>
+    </Fragment>
   );
 };
 
@@ -204,9 +205,5 @@ const styles = StyleSheet.create({
     padding: scale.vertical(16),
     borderRadius: scale.moderate(8),
     ...CommonStyles.justifyCenterRow,
-  },
-  languageOptionText: {
-    flex: 1,
-    ...typography.BodyMedium14,
   },
 });

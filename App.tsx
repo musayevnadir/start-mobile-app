@@ -6,19 +6,33 @@
  */
 
 import Router from 'router';
-import { Fragment } from 'react';
-import { View } from 'react-native';
+import { store } from 'store';
+import { useAppDispatch } from 'store';
+import { Provider } from 'react-redux';
+import { Fragment, useEffect } from 'react';
 import { CommonStyles } from 'theme/common.styles';
+import { Platform, StatusBar, View } from 'react-native';
 import { ThemeProvider, useTheme } from 'theme/ThemeContext';
+import { loadUserFromStorage } from 'store/slices/authSlice';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { StatusBarManager } from 'components/StatusBarManager';
 
 function AppContent() {
-  const { colors } = useTheme();
+  const { colors, isDark } = useTheme();
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(loadUserFromStorage());
+  }, [dispatch]);
 
   return (
     <Fragment>
-      <StatusBarManager />
+      <StatusBar
+        translucent
+        barStyle={isDark ? 'light-content' : 'dark-content'}
+        backgroundColor={
+          Platform.OS === 'android' ? colors.background : undefined
+        }
+      />
       <View style={[CommonStyles.flex, { backgroundColor: colors.background }]}>
         <Router />
       </View>
@@ -28,11 +42,13 @@ function AppContent() {
 
 function App() {
   return (
-    <SafeAreaProvider>
-      <ThemeProvider>
-        <AppContent />
-      </ThemeProvider>
-    </SafeAreaProvider>
+    <Provider store={store}>
+      <SafeAreaProvider>
+        <ThemeProvider>
+          <AppContent />
+        </ThemeProvider>
+      </SafeAreaProvider>
+    </Provider>
   );
 }
 

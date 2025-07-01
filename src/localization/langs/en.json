@@ -15,7 +15,19 @@
     "CONFIRM_PASSWORD": "Confirm Password",
     "BACK_TO_LOGIN": "Back to Login",
     "CHOOSE_YOUR_THEME_AND_SIGN_IN": "Choose your theme and sign in",
-    "LOG_OUT": "Log Out"
+    "LOG_OUT": "Log Out",
+    "LOG_OUT_CONFIRMATION": "Are you sure you want to log out?",
+    "SUCCESS": "Success",
+    "ERROR": "Error",
+    "LOGIN_SUCCESS": "You have successfully logged in!",
+    "INVALID_CREDENTIALS": "Invalid email or password. Use: start.mobile.app@gmail.com / Admin123!",
+    "REGISTRATION_SUCCESS": "Registration successful!",
+    "FILL_ALL_FIELDS": "Please fill in all fields",
+    "PASSWORDS_DO_NOT_MATCH": "Passwords do not match",
+    "ENTER_FIRST_NAME": "Please enter first name",
+    "ENTER_LAST_NAME": "Please enter last name",
+    "ENTER_EMAIL": "Please enter email",
+    "ENTER_PASSWORD": "Please enter password"
   },
   "MAIN": {
     "MAIN_SCREEN": "Main Screen",

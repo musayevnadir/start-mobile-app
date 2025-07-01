@@ -85,7 +85,7 @@ export const MainScreen: React.FC<
 const styles = StyleSheet.create({
   root: {
     ...CommonStyles.flex,
-    paddingTop: scale.vertical(16),
+    paddingTop: scale.vertical(22),
   },
   topHeader: {
     paddingHorizontal: scale.horizontal(16),

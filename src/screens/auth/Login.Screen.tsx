@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
   },
   title: {
     textAlign: 'center',
-    ...typography.LargeTitleRegular40,
+    ...typography.HeadlineRegular24,
     marginBottom: scale.vertical(8),
   },
   subtitle: {
