@@ -9,11 +9,11 @@ import {
   Alert,
 } from 'react-native';
 import { SvgImage } from './SvgImage';
+import { ReusableButton } from './ReusableButton';
 import { scale } from 'theme/metrics';
 import { Routes } from 'router/routes';
 import { typography } from 'theme/typograpy';
 import { useTheme } from 'theme/ThemeContext';
-import { CommonStyles } from 'theme/common.styles';
 import { useNavigation } from '@react-navigation/native';
 import { NavigationParamList } from 'types/navigator.types';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -65,7 +65,6 @@ export const LoginForm: React.FC = () => {
       Alert.alert(t('AUTH.ERROR'), t('AUTH.FILL_ALL_FIELDS'));
       return;
     }
-
     setIsLoggingIn(true);
     dispatch(login({ email, password }));
   };
@@ -83,9 +82,9 @@ export const LoginForm: React.FC = () => {
           style={[
             styles.input,
             {
-              backgroundColor: colors.backgroundSecondary,
-              borderColor: colors.border,
               color: colors.text,
+              borderColor: colors.border,
+              backgroundColor: colors.backgroundSecondary,
             },
           ]}
           value={email}
@@ -117,14 +116,14 @@ export const LoginForm: React.FC = () => {
             passwordRules=""
           />
           <TouchableOpacity
+            activeOpacity={0.7}
             style={styles.eyeButton}
             onPress={togglePasswordVisibility}
-            activeOpacity={0.7}
           >
             <SvgImage
-              color={colors.textSecondary}
               width={24}
               height={24}
+              color={colors.textSecondary}
               source={
                 !showPassword
                   ? require('assets/vectors/eye.svg')
@@ -139,37 +138,16 @@ export const LoginForm: React.FC = () => {
           </Text>
         </TouchableOpacity>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={[
-              styles.loginButton,
-              {
-                backgroundColor: colors.primary,
-              },
-            ]}
+          <ReusableButton
+            fullWidth={false}
             onPress={handleLogin}
-          >
-            <Text
-              style={[typography.HeadlineMedium16, { color: colors.surface }]}
-            >
-              {t('AUTH.SIGN_IN')}
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[
-              styles.registerButton,
-              {
-                backgroundColor: colors.backgroundSecondary,
-                borderColor: colors.primary,
-              },
-            ]}
+            title={t('AUTH.SIGN_IN')}
+          />
+          <ReusableButton
+            variant="outline"
+            title={t('AUTH.CREATE_ACCOUNT')}
             onPress={() => navigation.navigate(Routes.REGISTER)}
-          >
-            <Text
-              style={[typography.HeadlineMedium16, { color: colors.primary }]}
-            >
-              {t('AUTH.CREATE_ACCOUNT')}
-            </Text>
-          </TouchableOpacity>
+          />
         </View>
         <View style={styles.hintContainer}>
           <Text style={[styles.hintText, { color: colors.textSecondary }]}>
@@ -222,8 +200,8 @@ const styles = StyleSheet.create({
   },
   eyeButton: {
     position: 'absolute',
-    right: scale.horizontal(16),
     top: scale.vertical(10),
+    right: scale.horizontal(16),
     padding: scale.moderate(4),
   },
   forgotPassword: {
@@ -233,17 +211,6 @@ const styles = StyleSheet.create({
   buttonContainer: {
     gap: scale.vertical(12),
     marginTop: scale.vertical(8),
-  },
-  loginButton: {
-    padding: scale.vertical(16),
-    borderRadius: scale.moderate(8),
-    ...CommonStyles.flexAlignJustifyCenter,
-  },
-  registerButton: {
-    borderWidth: 1,
-    padding: scale.vertical(16),
-    borderRadius: scale.moderate(8),
-    ...CommonStyles.flexAlignJustifyCenter,
   },
   hintContainer: {
     marginTop: scale.vertical(20),

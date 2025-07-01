@@ -1,24 +1,18 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  SafeAreaView,
-  ScrollView,
-  Alert,
-} from 'react-native';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { NavigationParamList } from 'types/navigator.types';
 import { Routes } from 'router/routes';
-import { useTheme } from 'theme/ThemeContext';
 import { scale } from 'theme/metrics';
 import { typography } from 'theme/typograpy';
-import { ThemeToggle } from 'components/ThemeToggle';
-import { CommonStyles } from 'theme/common.styles';
-import { useAppDispatch, useAppSelector, selectUser } from 'store';
+import { useTheme } from 'theme/ThemeContext';
 import { logout } from 'store/slices/authSlice';
+import { useTranslation } from 'react-i18next';
+import { CommonStyles } from 'theme/common.styles';
+import { ThemeToggle } from 'components/ThemeToggle';
+import { ReusableButton } from 'components/ReusableButton';
+import { NavigationParamList } from 'types/navigator.types';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useAppDispatch, useAppSelector, selectUser } from 'store';
+import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 export const ProfileScreen: React.FC<
   NativeStackScreenProps<NavigationParamList, Routes.PROFILE>
@@ -45,7 +39,9 @@ export const ProfileScreen: React.FC<
   };
 
   return (
-    <SafeAreaView style={[styles.root, { backgroundColor: colors.background }]}>
+    <SafeAreaView
+      style={[CommonStyles.flex, { backgroundColor: colors.background }]}
+    >
       <ScrollView
         style={CommonStyles.flex}
         contentContainerStyle={styles.scrollContent}
@@ -68,67 +64,41 @@ export const ProfileScreen: React.FC<
         </View>
         <ThemeToggle />
         <View style={styles.buttonsContainer}>
-          <TouchableOpacity
-            style={[styles.button, { backgroundColor: colors.primary }]}
+          <ReusableButton
+            icon="📄"
+            variant="large"
+            title={t('MAIN.GO_TO_DETAIL_SCREEN')}
+            subtitle={t('MAIN.VIEW_DETAILED_INFORMATION')}
             onPress={() => navigation.navigate(Routes.DETAIL)}
-            activeOpacity={0.8}
-          >
-            <Text style={[styles.buttonIcon, { color: colors.surface }]}>
-              📄
-            </Text>
-            <Text style={[styles.buttonText, { color: colors.surface }]}>
-              {t('MAIN.GO_TO_DETAIL_SCREEN')}
-            </Text>
-            <Text style={[styles.buttonSubtext, { color: colors.surface }]}>
-              {t('MAIN.VIEW_DETAILED_INFORMATION')}
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.button, { backgroundColor: colors.primary }]}
+          />
+          <ReusableButton
+            icon="📋"
+            variant="large"
+            title={t('MAIN.GO_TO_LIST_SCREEN')}
+            subtitle={t('MAIN.BROWSE_ITEMS_LIST')}
             onPress={() => navigation.navigate(Routes.LIST)}
-            activeOpacity={0.8}
-          >
-            <Text style={[styles.buttonIcon, { color: colors.surface }]}>
-              📋
-            </Text>
-            <Text style={[styles.buttonText, { color: colors.surface }]}>
-              {t('MAIN.GO_TO_LIST_SCREEN')}
-            </Text>
-            <Text style={[styles.buttonSubtext, { color: colors.surface }]}>
-              {t('MAIN.BROWSE_ITEMS_LIST')}
-            </Text>
-          </TouchableOpacity>
+          />
         </View>
-        <TouchableOpacity
-          style={[
-            styles.logoutButton,
-            {
-              backgroundColor: colors.backgroundSecondary,
-              borderColor: colors.border,
-            },
-          ]}
-          onPress={handleLogout}
-          activeOpacity={0.8}
-        >
-          <Text
-            style={[
-              typography.HeadlineMedium16,
-              { color: colors.textSecondary },
-            ]}
-          >
-            {t('AUTH.LOG_OUT')}
-          </Text>
-        </TouchableOpacity>
+        <View>
+          <ReusableButton
+            variant="secondary"
+            title={t('AUTH.LOG_OUT')}
+            onPress={handleLogout}
+            customStyles={{
+              container: {
+                borderWidth: 1,
+                borderColor: colors.border,
+                marginTop: scale.vertical(24),
+              },
+            }}
+          />
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  root: {
-    ...CommonStyles.flex,
-    paddingTop: scale.vertical(22),
-  },
   scrollContent: {
     flexGrow: 1,
     padding: scale.horizontal(16),
@@ -165,42 +135,5 @@ const styles = StyleSheet.create({
   buttonsContainer: {
     gap: scale.vertical(16),
     marginTop: scale.vertical(16),
-  },
-  button: {
-    padding: scale.vertical(20),
-    borderRadius: scale.moderate(12),
-    ...CommonStyles.alignJustifyCenter,
-    minHeight: scale.vertical(100),
-  },
-  buttonIcon: {
-    ...typography.HeadlineRegular24,
-    marginBottom: scale.vertical(8),
-  },
-  buttonText: {
-    textAlign: 'center',
-    ...typography.HeadlineMedium16,
-    marginBottom: scale.vertical(4),
-  },
-  buttonSubtext: {
-    textAlign: 'center',
-    ...typography.FootnoteRegular12,
-    opacity: 0.9,
-  },
-  languageSection: {
-    marginTop: scale.vertical(16),
-    marginBottom: scale.vertical(16),
-  },
-  sectionTitle: {
-    ...typography.HeadlineMedium16,
-    marginBottom: scale.vertical(12),
-  },
-  logoutButton: {
-    borderWidth: 1,
-    padding: scale.vertical(16),
-    marginTop: scale.vertical(24),
-    borderRadius: scale.moderate(12),
-    marginBottom: scale.vertical(20),
-    gap: scale.horizontal(12),
-    ...CommonStyles.alignJustifyCenterRow,
   },
 });

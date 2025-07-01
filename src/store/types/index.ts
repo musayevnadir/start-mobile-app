@@ -14,4 +14,5 @@ export interface AuthState {
 
 export interface RootState {
   auth: AuthState;
+  repositories: import('../slices/repositorySlice').RepositoryState;
 }

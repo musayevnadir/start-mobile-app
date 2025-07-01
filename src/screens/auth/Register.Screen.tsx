@@ -23,6 +23,7 @@ import {
 } from 'store';
 import { register, clearLastOperationResult } from 'store/slices/authSlice';
 import { SvgImage } from 'components/SvgImage';
+import { ReusableButton } from 'components/ReusableButton';
 
 export const RegisterScreen: React.FC<
   NativeStackScreenProps<NavigationParamList, Routes.REGISTER>
@@ -148,13 +149,13 @@ export const RegisterScreen: React.FC<
                 color: colors.text,
               },
             ]}
+            autoCapitalize="words"
+            autoComplete="name-family"
+            textContentType="familyName"
             value={formData.lastName}
             placeholder={t('AUTH.LAST_NAME')}
             placeholderTextColor={colors.textSecondary}
             onChangeText={value => handleInputChange('lastName', value)}
-            autoCapitalize="words"
-            autoComplete="name-family"
-            textContentType="familyName"
           />
           <TextInput
             style={[
@@ -165,14 +166,14 @@ export const RegisterScreen: React.FC<
                 color: colors.text,
               },
             ]}
+            autoCapitalize="none"
+            autoComplete="email"
             value={formData.email}
+            keyboardType="email-address"
+            textContentType="emailAddress"
             placeholder={t('AUTH.EMAIL')}
             placeholderTextColor={colors.textSecondary}
             onChangeText={value => handleInputChange('email', value)}
-            keyboardType="email-address"
-            autoCapitalize="none"
-            autoComplete="email"
-            textContentType="emailAddress"
           />
           <View style={styles.passwordContainer}>
             <TextInput
@@ -184,14 +185,14 @@ export const RegisterScreen: React.FC<
                   color: colors.text,
                 },
               ]}
+              passwordRules=""
+              autoComplete="off"
+              textContentType="none"
               value={formData.password}
               placeholder={t('AUTH.PASSWORD')}
               placeholderTextColor={colors.textSecondary}
               onChangeText={value => handleInputChange('password', value)}
               secureTextEntry={!showPassword}
-              autoComplete="off"
-              textContentType="none"
-              passwordRules=""
             />
             <TouchableOpacity
               style={styles.eyeButton}
@@ -220,6 +221,9 @@ export const RegisterScreen: React.FC<
                   color: colors.text,
                 },
               ]}
+              passwordRules=""
+              autoComplete="off"
+              textContentType="none"
               value={formData.confirmPassword}
               placeholder={t('AUTH.CONFIRM_PASSWORD')}
               placeholderTextColor={colors.textSecondary}
@@ -227,9 +231,6 @@ export const RegisterScreen: React.FC<
                 handleInputChange('confirmPassword', value)
               }
               secureTextEntry={!showConfirmPassword}
-              autoComplete="off"
-              textContentType="none"
-              passwordRules=""
             />
             <TouchableOpacity
               style={styles.eyeButton}
@@ -250,37 +251,16 @@ export const RegisterScreen: React.FC<
           </View>
         </View>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={[
-              styles.registerButton,
-              {
-                backgroundColor: colors.primary,
-              },
-            ]}
+          <ReusableButton
+            variant="primary"
             onPress={handleRegister}
-          >
-            <Text
-              style={[typography.HeadlineMedium16, { color: colors.surface }]}
-            >
-              {t('AUTH.CREATE_ACCOUNT')}
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[
-              styles.loginButton,
-              {
-                backgroundColor: colors.backgroundSecondary,
-                borderColor: colors.primary,
-              },
-            ]}
+            title={t('AUTH.CREATE_ACCOUNT')}
+          />
+          <ReusableButton
+            variant="outline"
+            title={t('AUTH.BACK_TO_LOGIN')}
             onPress={() => navigation.goBack()}
-          >
-            <Text
-              style={[typography.HeadlineMedium16, { color: colors.primary }]}
-            >
-              {t('AUTH.BACK_TO_LOGIN')}
-            </Text>
-          </TouchableOpacity>
+          />
         </View>
       </View>
     </ScrollView>
@@ -338,16 +318,5 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     gap: scale.vertical(12),
-  },
-  registerButton: {
-    padding: scale.vertical(16),
-    borderRadius: scale.moderate(8),
-    ...CommonStyles.flexAlignJustifyCenter,
-  },
-  loginButton: {
-    padding: scale.vertical(16),
-    borderRadius: scale.moderate(8),
-    borderWidth: 1,
-    ...CommonStyles.flexAlignJustifyCenter,
   },
 });

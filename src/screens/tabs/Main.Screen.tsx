@@ -1,22 +1,16 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
-
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  SafeAreaView,
-  ScrollView,
-} from 'react-native';
 import { Routes } from 'router/routes';
 import { scale } from 'theme/metrics';
-import { useTheme } from 'theme/ThemeContext';
-import { NavigationParamList } from 'types/navigator.types';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { typography } from 'theme/typograpy';
+import { useTheme } from 'theme/ThemeContext';
+import { useTranslation } from 'react-i18next';
 import { CommonStyles } from 'theme/common.styles';
 import { LanguageToggle } from 'components/LanguageToggle';
+import { ReusableButton } from 'components/ReusableButton';
+import { NavigationParamList } from 'types/navigator.types';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 export const MainScreen: React.FC<
   NativeStackScreenProps<NavigationParamList, Routes.MAIN>
@@ -27,7 +21,7 @@ export const MainScreen: React.FC<
   return (
     <SafeAreaView style={[styles.root, { backgroundColor: colors.background }]}>
       <View style={[styles.topHeader, { backgroundColor: colors.surface }]}>
-        <Text style={[styles.appTitle, { color: colors.text }]}>
+        <Text style={[typography.HeadlineBold18, { color: colors.text }]}>
           {t('MAIN.MAIN_SCREEN')}
         </Text>
         <LanguageToggle />
@@ -46,36 +40,20 @@ export const MainScreen: React.FC<
           </Text>
         </View>
         <View style={styles.buttonsContainer}>
-          <TouchableOpacity
-            style={[styles.button, { backgroundColor: colors.primary }]}
+          <ReusableButton
+            icon="📄"
+            variant="large"
+            title={t('MAIN.GO_TO_DETAIL_SCREEN')}
+            subtitle={t('MAIN.VIEW_DETAILED_INFORMATION')}
             onPress={() => navigation.navigate(Routes.DETAIL)}
-            activeOpacity={0.8}
-          >
-            <Text style={[styles.buttonIcon, { color: colors.surface }]}>
-              📄
-            </Text>
-            <Text style={[styles.buttonText, { color: colors.surface }]}>
-              {t('MAIN.GO_TO_DETAIL_SCREEN')}
-            </Text>
-            <Text style={[styles.buttonSubtext, { color: colors.surface }]}>
-              {t('MAIN.VIEW_DETAILED_INFORMATION')}
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            activeOpacity={0.8}
+          />
+          <ReusableButton
+            icon="📋"
+            variant="large"
+            title={t('MAIN.GO_TO_LIST_SCREEN')}
+            subtitle={t('MAIN.BROWSE_ITEMS_LIST')}
             onPress={() => navigation.navigate(Routes.LIST)}
-            style={[styles.button, { backgroundColor: colors.primary }]}
-          >
-            <Text style={[styles.buttonIcon, { color: colors.surface }]}>
-              📋
-            </Text>
-            <Text style={[styles.buttonText, { color: colors.surface }]}>
-              {t('MAIN.GO_TO_LIST_SCREEN')}
-            </Text>
-            <Text style={[styles.buttonSubtext, { color: colors.surface }]}>
-              {t('MAIN.BROWSE_ITEMS_LIST')}
-            </Text>
-          </TouchableOpacity>
+          />
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -99,9 +77,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.1,
     shadowRadius: 2,
-  },
-  appTitle: {
-    ...typography.HeadlineBold18,
   },
   scrollContent: {
     flexGrow: 1,
@@ -133,34 +108,5 @@ const styles = StyleSheet.create({
   },
   buttonsContainer: {
     gap: scale.vertical(16),
-  },
-  button: {
-    padding: scale.vertical(20),
-    borderRadius: scale.moderate(12),
-    ...CommonStyles.alignJustifyCenter,
-    minHeight: scale.vertical(100),
-
-    elevation: 3,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.15,
-    shadowRadius: 3,
-  },
-  buttonIcon: {
-    ...typography.HeadlineRegular24,
-    marginBottom: scale.vertical(8),
-  },
-  buttonText: {
-    ...typography.HeadlineMedium16,
-    marginBottom: scale.vertical(4),
-    textAlign: 'center',
-  },
-  buttonSubtext: {
-    textAlign: 'center',
-    ...typography.FootnoteRegular12,
-    opacity: 0.9,
   },
 });

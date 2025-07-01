@@ -61,6 +61,40 @@
     "DESCRIPTION_FOR_ITEM_3": "Description for item 3",
     "DESCRIPTION_FOR_ITEM_4": "Description for item 4"
   },
+  "DETAIL": {
+    "REPOSITORY_DETAILS": "Repository Details",
+    "NO_REPOSITORY_SELECTED": "No Repository Selected",
+    "SELECT_REPOSITORY_MESSAGE": "Please go back and select a repository from the list.",
+    "STARS": "Stars",
+    "FORKS": "Forks",
+    "OWNER": "Owner:",
+    "REPOSITORY_ID": "Repository ID:",
+    "CREATED": "Created:",
+    "LAST_UPDATED": "Last Updated:",
+    "OPEN_REPOSITORY": "🔗 Open Repository on GitHub",
+    "ERROR": "Error",
+    "UNABLE_TO_OPEN_URL": "Unable to open repository URL",
+    "REFRESH_TO_UPDATE": "Pull to refresh",
+    "REPOSITORY_INFO": "Repository Information",
+    "STATISTICS": "Statistics"
+  },
+  "LIST": {
+    "GITHUB_REPOSITORIES": "GitHub Repositories",
+    "REPOSITORIES_SUBTITLE": "'s repositories",
+    "SEARCH_PLACEHOLDER": "Search repositories...",
+    "SEARCH": "Search",
+    "CLEAR": "Clear",
+    "NO_REPOSITORIES_FOUND": "No repositories found",
+    "TRY_DIFFERENT_SEARCH": "Try a different search term",
+    "UNABLE_TO_LOAD": "Unable to load repositories",
+    "UNKNOWN_LANGUAGE": "Unknown",
+    "NO_DESCRIPTION": "No description available",
+    "UPDATED": "Updated",
+    "LOADING_MORE": "Loading more repositories...",
+    "LOADING_REPOSITORIES": "Loading repositories...",
+    "PULL_TO_REFRESH": "Pull to refresh",
+    "END_OF_LIST": "End of repositories"
+  },
   "PROFILE": {
     "PROFILE": "Profile",
     "SETTINGS": "Settings",
@@ -122,6 +156,8 @@
     "VALIDATION_ERROR": "Validation error",
     "UNAUTHORIZED": "Unauthorized access",
     "NOT_FOUND": "Not found",
-    "SOMETHING_WENT_WRONG": "Something went wrong"
+    "SOMETHING_WENT_WRONG": "Something went wrong",
+    "GITHUB_API_ERROR": "GitHub API error",
+    "FAILED_TO_FETCH_REPOSITORIES": "Failed to fetch repositories"
   }
 }
