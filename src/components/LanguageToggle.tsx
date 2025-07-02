@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Modal,
   Dimensions,
+  Alert,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from 'theme/ThemeContext';
@@ -14,6 +15,7 @@ import { typography } from 'theme/typograpy';
 import { useLanguage } from 'hooks/useLanguage';
 import { Locale } from 'localization/IMLocalize';
 import { CommonStyles } from 'theme/common.styles';
+import notifee from '@notifee/react-native';
 
 const { width } = Dimensions.get('window');
 
@@ -42,6 +44,60 @@ export const LanguageToggle: React.FC = () => {
     }),
   );
 
+  const testNotification = async () => {
+    try {
+      const settings = await notifee.getNotificationSettings();
+      if (
+        settings.authorizationStatus === 0 ||
+        settings.authorizationStatus === 2
+      ) {
+        Alert.alert(
+          t('NOTIFICATIONS.PERMISSIONS_TITLE'),
+          t('NOTIFICATIONS.PERMISSIONS_MESSAGE'),
+          [{ text: t('COMMON.OK') }],
+        );
+        return;
+      }
+
+      await onDisplayNotification();
+    } catch (error) {
+      console.error('Test notification error:', error);
+      Alert.alert(t('COMMON.ERROR'), t('NOTIFICATIONS.DISPLAY_ERROR'), [
+        { text: t('COMMON.OK') },
+      ]);
+    }
+  };
+
+  const onDisplayNotification = async () => {
+    try {
+      const channelId = await notifee.createChannel({
+        id: 'language_change',
+        name: 'Language Change',
+        description: 'Notifications for language changes',
+        importance: 4,
+      });
+
+      await notifee.displayNotification({
+        title: 'Start Mobile App 🚀',
+        body: 'Добро пожаловать в наше мобильное приложение! Здесь вы можете легко переключать языки и наслаждаться удобным интерфейсом.',
+        android: {
+          channelId,
+          smallIcon: 'ic_launcher',
+          color: '#007AFF',
+          pressAction: {
+            id: 'default',
+          },
+          importance: 4,
+        },
+        ios: {
+          sound: 'default',
+        },
+      });
+    } catch (error) {
+      console.error('Error displaying notification:', error);
+    }
+  };
+
   const handleLanguageChange = async (languageCode: Locale) => {
     try {
       await switchLanguage(languageCode);
@@ -62,25 +118,35 @@ export const LanguageToggle: React.FC = () => {
 
   return (
     <Fragment>
-      <TouchableOpacity
-        style={[
-          styles.languageButton,
-          {
-            backgroundColor: colors.backgroundSecondary,
-            borderColor: colors.border,
-          },
-        ]}
-        onPress={() => setIsModalVisible(true)}
-        activeOpacity={0.8}
-      >
-        <Text style={[typography.FootnoteBold12, { color: colors.text }]}>
-          {currentLangInfo?.flag || '🇺🇸'}
-        </Text>
-        <Text style={[typography.BodyMedium14, { color: colors.text }]}>
-          {currentLangInfo?.code.toUpperCase() || 'EN'}
-        </Text>
-      </TouchableOpacity>
-
+      <View style={styles.container}>
+        <TouchableOpacity
+          style={[
+            styles.languageButton,
+            {
+              backgroundColor: colors.backgroundSecondary,
+              borderColor: colors.border,
+            },
+          ]}
+          onPress={() => setIsModalVisible(true)}
+          activeOpacity={0.8}
+        >
+          <Text style={[typography.FootnoteBold12, { color: colors.text }]}>
+            {currentLangInfo?.flag || '🇺🇸'}
+          </Text>
+          <Text style={[typography.BodyMedium14, { color: colors.text }]}>
+            {currentLangInfo?.code.toUpperCase() || 'EN'}
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.testButton, { backgroundColor: colors.primary }]}
+          onPress={testNotification}
+          activeOpacity={0.8}
+        >
+          <Text style={[typography.BodyMedium14, { color: colors.surface }]}>
+            🔔 Test
+          </Text>
+        </TouchableOpacity>
+      </View>
       <Modal
         visible={isModalVisible}
         transparent
@@ -170,6 +236,16 @@ export const LanguageToggle: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    ...CommonStyles.alignCenterRow,
+    gap: scale.horizontal(8),
+  },
+  testButton: {
+    borderRadius: scale.moderate(8),
+    paddingVertical: scale.vertical(8),
+    paddingHorizontal: scale.horizontal(12),
+    ...CommonStyles.alignCenterRow,
+  },
   languageButton: {
     borderWidth: 1,
     borderRadius: scale.moderate(8),
