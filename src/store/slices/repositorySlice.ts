@@ -1,22 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-
-export interface Repository {
-  id: number;
-  name: string;
-  full_name: string;
-  description: string | null;
-  html_url: string;
-  stargazers_count: number;
-  forks_count: number;
-  language: string | null;
-  updated_at: string;
-  created_at: string;
-  owner: {
-    login: string;
-    avatar_url: string;
-  };
-}
+import { GitHubAPI, Repository } from '../../services/api/github.api';
 
 export interface RepositoryState {
   repositories: Repository[];
@@ -47,45 +31,57 @@ export const fetchRepositories = createAsyncThunk(
     query = '',
     refresh = false,
   }: FetchRepositoriesParams) => {
-    try {
-      let url = '';
+    if (query.trim()) {
+      const searchQuery = `${query} user:${username}`;
+      const response = await GitHubAPI.searchRepositories({
+        query: searchQuery,
+        page,
+        perPage,
+        sort: 'updated',
+      });
 
-      if (query.trim()) {
-        // Search repositories
-        url = `https://api.github.com/search/repositories?q=${encodeURIComponent(
-          query,
-        )}+user:${username}&page=${page}&per_page=${perPage}&sort=updated`;
-      } else {
-        // Get user repositories
-        url = `https://api.github.com/users/${username}/repos?page=${page}&per_page=${perPage}&sort=updated`;
+      if (!response.result) {
+        throw new Error(response.message || 'Failed to search repositories');
       }
 
-      const response = await fetch(url);
+      return {
+        repositories: response.data?.items || [],
+        totalCount: response.data?.total_count || 0,
+        page,
+        refresh,
+      };
+    } else {
+      const response = await GitHubAPI.getUserRepositories({
+        username,
+        page,
+        perPage,
+        sort: 'updated',
+      });
 
-      if (!response.ok) {
-        throw new Error(`GitHub API error: ${response.status}`);
+      if (!response.result) {
+        throw new Error(response.message || 'Failed to fetch repositories');
       }
 
-      const data = await response.json();
-
-      if (query.trim()) {
-        return {
-          repositories: data.items || [],
-          totalCount: data.total_count || 0,
-          page,
-          refresh,
-        };
-      } else {
-        return {
-          repositories: data || [],
-          totalCount: data.length || 0,
-          page,
-          refresh,
-        };
-      }
-    } catch (error) {
-      throw error;
+      return {
+        repositories: response.data || [],
+        totalCount: response.data?.length || 0,
+        page,
+        refresh,
+      };
     }
+  },
+);
+
+export const fetchRepository = createAsyncThunk(
+  'repositories/fetchRepository',
+  async ({ owner, repo }: { owner: string; repo: string }) => {
+    const response = await GitHubAPI.getRepository(owner, repo);
+
+    if (!response.result) {
+      throw new Error(response.message || 'Failed to fetch repository');
+    }
+
+    return response.data;
   },
 );
 
@@ -107,10 +103,6 @@ const repositorySlice = createSlice({
   reducers: {
     setCurrentRepository: (state, action: PayloadAction<Repository>) => {
       state.currentRepository = action.payload;
-    },
-
-    clearCurrentRepository: state => {
-      state.currentRepository = null;
     },
 
     setSearchQuery: (state, action: PayloadAction<string>) => {
@@ -161,13 +153,25 @@ const repositorySlice = createSlice({
         state.isLoading = false;
         state.isRefreshing = false;
         state.error = action.error.message || 'Failed to fetch repositories';
+      })
+      .addCase(fetchRepository.pending, state => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchRepository.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = null;
+        state.currentRepository = action.payload;
+      })
+      .addCase(fetchRepository.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message || 'Failed to fetch repository';
       });
   },
 });
 
 export const {
   setCurrentRepository,
-  clearCurrentRepository,
   setSearchQuery,
   clearRepositories,
   clearError,

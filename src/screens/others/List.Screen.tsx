@@ -35,8 +35,8 @@ import {
   setSearchQuery,
   clearRepositories,
   clearError,
-  type Repository,
 } from 'store/slices/repositorySlice';
+import { Repository } from 'services/api/github.api';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -145,14 +145,25 @@ export const ListScreen: React.FC<
     >
       <View style={styles.repositoryHeader}>
         <Text
-          style={[styles.repoName, { color: colors.text }]}
           numberOfLines={1}
+          style={[styles.repoName, { color: colors.text }]}
         >
           {item.name}
         </Text>
-        <Text style={[styles.repoLanguage, { color: colors.primary }]}>
-          {item.language || t('LIST.UNKNOWN_LANGUAGE')}
-        </Text>
+        <View style={CommonStyles.alignJustifyCenterRow}>
+          <Text style={[styles.repoLanguage, { color: colors.primary }]}>
+            {item.language || t('LIST.UNKNOWN_LANGUAGE')}
+          </Text>
+          <Text
+            style={[
+              styles.arrow,
+              typography.HeadlineRegular20,
+              { color: colors.textSecondary },
+            ]}
+          >
+            →
+          </Text>
+        </View>
       </View>
       <Text
         numberOfLines={2}
@@ -201,7 +212,6 @@ export const ListScreen: React.FC<
           {t('LIST.UPDATED')} {formatDate(item.updated_at)}
         </Text>
       </View>
-      <Text style={[styles.arrowIcon, { color: colors.textSecondary }]}>→</Text>
     </TouchableOpacity>
   );
 
@@ -410,6 +420,10 @@ const styles = StyleSheet.create({
     marginBottom: scale.vertical(8),
     ...CommonStyles.alignCenterJustifyBetweenRow,
   },
+  arrow: {
+    position: 'relative',
+    bottom: 8,
+  },
   repoName: {
     flex: 1,
     ...typography.HeadlineMedium16,
@@ -438,12 +452,6 @@ const styles = StyleSheet.create({
   updatedText: {
     marginLeft: 'auto',
     ...typography.FootnoteRegular12,
-  },
-  arrowIcon: {
-    position: 'absolute',
-    top: scale.vertical(16),
-    right: scale.horizontal(16),
-    ...typography.HeadlineRegular20,
   },
   footerLoader: {
     alignItems: 'center',
